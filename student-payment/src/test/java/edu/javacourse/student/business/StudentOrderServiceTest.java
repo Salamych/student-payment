@@ -19,7 +19,8 @@ public class StudentOrderServiceTest {
 
     @Test
     public void testService() {
-        service.test();
+        service.testSave();
+        service.testGet();
     }
     
 }
