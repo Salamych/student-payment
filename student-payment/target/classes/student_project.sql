@@ -30,7 +30,7 @@ create table jc_country_struct
 
 create table jc_passport_office
 (
-    p_office_id integer not null,
+        p_office_id integer not null,
 	p_office_area_id char(12) not null,
 	p_office_name varchar(200),
 	primary key(p_office_id),
@@ -39,7 +39,7 @@ create table jc_passport_office
 
 create table jc_register_office
 (
-    r_office_id integer not null,
+        r_office_id integer not null,
 	r_office_area_id char(12) not null,
 	r_office_name varchar(200),
 	primary key(r_office_id),
@@ -93,7 +93,7 @@ create table jc_student_order
     foreign key(w_university_id) references jc_university(university_id) on delete restrict,
     foreign key(register_office_id) references jc_register_office (r_office_id) on delete restrict
 );
-
+ 
 create table jc_student_child
 (
     student_child_id SERIAL,
@@ -119,6 +119,7 @@ CREATE INDEX idx_student_order_status ON jc_student_order(student_order_status);
 CREATE INDEX idx_student_order_id ON jc_student_child(student_order_id);
 
 
+drop table if exists jc_student_order_tmp;
 
 create table jc_student_order_tmp
 (
@@ -126,10 +127,28 @@ create table jc_student_order_tmp
     h_sur_name varchar(100) not null,
     h_given_name varchar (100) not null,
     h_patronymic varchar(100) not null,
-    h_date_of_birth date  not null,
+    h_date_of_birth date  not null, 
+    h_passport_seria varchar(10) not null,
+    h_passport_number varchar(10) not null,
+    h_passport_date date not null,
+    h_post_index varchar(10),
+    h_street_code integer  not null,
+    h_building varchar(10)  not null,
+    h_extension varchar(10),
+    h_apartment varchar(10),
     w_sur_name varchar(100) not null,
     w_given_name varchar (100) not null,
     w_patronymic varchar(100) not null,
     w_date_of_birth date  not null,
-    primary key (student_order_id)
+    w_passport_seria varchar(10) not null,
+    w_passport_number varchar(10) not null,
+    w_passport_date date not null,
+    w_post_index varchar(10),
+    w_street_code integer  not null,    
+    w_building varchar(10)  not null,
+    w_extension varchar(10),
+    w_apartment varchar(10),
+    primary key (student_order_id),
+    foreign key(h_street_code) references jc_street (street_code) on delete restrict,
+    foreign key(w_street_code) references jc_street (street_code) on delete restrict
 );

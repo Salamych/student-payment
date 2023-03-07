@@ -1,7 +1,11 @@
 package edu.javacourse.student.business;
 
+import edu.javacourse.student.dao.StreetRepository;
 import edu.javacourse.student.dao.StudentOrderRepository;
+import edu.javacourse.student.domain.Address;
+import edu.javacourse.student.domain.Adult;
 import edu.javacourse.student.domain.Person;
+import edu.javacourse.student.domain.Street;
 import edu.javacourse.student.domain.StudentOrder;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +22,8 @@ public class StudentOrderService {
     
     @Autowired
     private StudentOrderRepository dao;
+    @Autowired
+    private StreetRepository daoStreet;
     
     @Transactional
     public void testSave(){
@@ -31,18 +37,32 @@ public class StudentOrderService {
         List<StudentOrder> sos = dao.findAll();
         LOG.info(sos.get(0).getWife().getGivenName());
     }
-    private Person buildPerson(boolean wife){
-        Person p = new Person();
-        
+    private Adult buildPerson(boolean wife){
+        Adult p = new Adult();
         p.setDateOfBirth(LocalDate.now());
+        
+        Address a = new Address();
+        a.setPostCode("190000");
+        a.setBuilding("21");
+        a.setExtension("B");
+        a.setApartment("199");
+        Street one = daoStreet.getReferenceById(1L);
+        a.setStreet(one);
+        p.setAddress(a);
         if(wife){
-        p.setSurName("Ğşğèê");
-        p.setGivenName("Ìàğôà");
-        p.setPatronymic("Âàñèëüåâíà");
+        p.setSurName("Ğ ÑÑ€Ğ¸Ğº");
+        p.setGivenName("ĞœĞ°Ñ€Ñ„Ğ°");
+        p.setPatronymic("Ğ’Ğ°ÑĞ¸Ğ»ÑŒĞµĞ²Ğ½Ğ°");
+        p.setPassportSeria("WIFE_S");
+        p.setPassportNumber("WIFE_N");
+        p.setIssueDate(LocalDate.now());
         }else{
-        p.setSurName("Ğşğèê");
-        p.setGivenName("Èâàí");
-        p.setPatronymic("Âàñèëüåâè÷");
+        p.setSurName("Ğ ÑÑ€Ğ¸Ğº");
+        p.setGivenName("Ğ˜Ğ²Ğ°Ğ½");
+        p.setPatronymic("Ğ’Ğ°ÑĞ¸Ğ»ÑŒĞµĞ²Ğ¸Ñ‡");
+        p.setPassportSeria("HUSBAND_S");
+        p.setPassportNumber("HUSBAND_N");
+        p.setIssueDate(LocalDate.now());
         }
         
         return p;
