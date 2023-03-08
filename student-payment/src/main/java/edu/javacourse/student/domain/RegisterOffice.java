@@ -17,7 +17,7 @@ public class RegisterOffice {
     @Column(name = "r_office_id")
     private Long registerOfficeId;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "p_office_area_id")
+    @JoinColumn(name = "r_office_area_id")
     private CountryArea countryArea;
     @Column(name = "r_office_name")
     private String registerOfficeyName;

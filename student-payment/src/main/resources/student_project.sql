@@ -5,7 +5,8 @@ drop table if exists jc_register_office;
 drop table if exists jc_country_struct;
 drop table if exists jc_university;
 drop table if exists jc_street;
-drop table if exists jc_student_order_tmp;
+drop table if exists jc_order_status;
+
 
 create table jc_street
 (
@@ -46,10 +47,17 @@ create table jc_register_office
 	foreign key(r_office_area_id) references jc_country_struct(area_id) on delete restrict
 );
 
+create table jc_order_status
+(
+        status_id integer not null,
+	status_name varchar(200),
+	primary key(status_id)
+);
+
 create table jc_student_order
 (
     student_order_id SERIAL,
-    student_order_status int not null,
+    student_order_status_id int not null,
     student_order_date timestamp not null,
     h_sur_name varchar(100) not null,
     h_given_name varchar (100) not null,
@@ -81,10 +89,11 @@ create table jc_student_order
     w_apartment varchar(10),
     w_university_id integer not null,
     w_student_number varchar(30) not null,
-    certificate_id varchar(20) not null,
+    certificate_number varchar(20) not null,
     register_office_id integer not null,
     marriage_date date not null,
     primary key (student_order_id),
+    foreign key(student_order_status_id) references jc_order_status (status_id) on delete restrict,
     foreign key(h_street_code) references jc_street (street_code) on delete restrict,
     foreign key(h_passport_office_id) references jc_passport_office(p_office_id) on delete restrict,
     foreign key(h_university_id) references jc_university(university_id) on delete restrict,
@@ -115,8 +124,21 @@ create table jc_student_child
     foreign key(c_register_office_id) references jc_register_office (r_office_id) on delete restrict
 );
 
-CREATE INDEX idx_student_order_status ON jc_student_order(student_order_status);
+CREATE INDEX idx_student_order_status_id ON jc_student_order(student_order_status_id);
 CREATE INDEX idx_student_order_id ON jc_student_child(student_order_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 drop table if exists jc_student_order_tmp;
